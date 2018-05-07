@@ -1,0 +1,33 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Asset Ownership plugin for Craft CMS 3.x
+ *
+ * Asset Ownership Settings.twig
+ *
+ * @author    Marcus Reinhardt
+ * @copyright Copyright (c) 2018 Marcus Reinhardt
+ * @link      https://github.com/noxify
+ * @package   AssetOwnership
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{{ forms.selectField({
+    	label: "Asset User Field"|t("asset-ownership"),
+    	id: 'assetUser',
+    	name: 'assetUser',
+    	options: fields,
+    	value: settings['assetUser']
+	})
+}}
+
+{{ forms.lightswitchField({
+    id: 'uniqueAssetFilename',
+    name: 'uniqueAssetFilename',
+    label: 'Create Unique Filename' | t('asset-ownership'),
+    on: settings['uniqueAssetFilename'],
+    instructions: 'Unique Asset Filename Instructions' | t('asset-ownership')
+}) }}

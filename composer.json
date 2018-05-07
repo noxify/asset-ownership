@@ -1,0 +1,44 @@
+{
+    "name": "noxify/asset-ownership",
+    "description": "This plugin extends the Asset Query to limit the shown assets.",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "asset ownership",
+        "asset",
+        "assets",
+        "permission",
+        "i.love.nox"
+    ],
+    "support": {
+        "docs": "https://github.com/noxify/asset-ownership/blob/master/README.md",
+        "issues": "https://github.com/noxify/asset-ownership/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marcus Reinhardt",
+            "homepage": "https://github.com/noxify"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1"
+    },
+    "autoload": {
+        "psr-4": {
+          "noxify\\assetownership\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Asset Ownership",
+        "handle": "asset-ownership",
+        "hasCpSettings": true,
+        "hasCpSection": false,
+        "changelogUrl": "https://raw.githubusercontent.com/noxify/asset-ownership/master/CHANGELOG.md",
+        "class": "noxify\\assetownership\\AssetOwnership"
+    }
+}
