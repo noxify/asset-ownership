@@ -1,6 +1,6 @@
 {
     "name": "noxify/asset-ownership",
-    "description": "This plugin extends the Asset Query to limit the shown assets.",
+    "description": "This plugin extends the existing asset query and shows only the assets which has been uploaded by the current user.",
     "type": "craft-plugin",
     "version": "1.0.0",
     "keywords": [
