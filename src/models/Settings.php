@@ -18,7 +18,7 @@ use craft\base\Model;
 /**
  * @author    Marcus Reinhardt
  * @package   AssetOwnership
- * @since     1.0.1
+ * @since     1.0.2
  */
 class Settings extends Model
 {

@@ -11,7 +11,7 @@
 /**
  * @author    Marcus Reinhardt
  * @package   AssetOwnership
- * @since     1.0.1
+ * @since     1.0.2
  */
 return [
     'Asset Ownership plugin loaded' => 'Asset Ownership plugin loaded',

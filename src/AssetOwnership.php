@@ -14,6 +14,7 @@ namespace noxify\assetownership;
 use noxify\assetownership\models\Settings;
 
 use Craft;
+use craft\web\User;
 use yii\base\Event;
 use craft\helpers\Db;
 use craft\base\Plugin;
@@ -30,7 +31,7 @@ use noxify\assetownership\models\Settings as AssetOwnershipSettings;
  *
  * @author    Marcus Reinhardt
  * @package   AssetOwnership
- * @since     1.0.1
+ * @since     1.0.2
  *
  */
 class AssetOwnership extends Plugin
@@ -70,29 +71,32 @@ class AssetOwnership extends Plugin
             ];
         });
 
-        //filter assets if the user is not an admin or has the permission to see assets from other users
-        if( !Craft::$app->user->getIsAdmin() || !Craft::$app->user->checkPermission('viewPeerAssets') ) {
-            
-            Event::on('*', AssetQuery::EVENT_AFTER_PREPARE, function($event) {
-                if( $event->sender instanceof AssetQuery ) {
-                    $event->sender->query->innerJoin('{{%relations}} relations', '[[assets.id]] = [[relations.sourceId]]');
-                    $event->sender->query->andWhere(Db::parseParam('relations.targetId', Craft::$app->user->getId()));
+        //filter assets if the user is not an admin or has the permission to see assets from other users 
+        Event::on('*', AssetQuery::EVENT_AFTER_PREPARE, function($event) {
+            if( $event->sender instanceof AssetQuery ) {
+                if( !Craft::$app->user->getIsAdmin() && !Craft::$app->user->checkPermission('viewPeerAssets') ) {
+                    if( !$event->sender->query->isJoined('{{%relations}}') ) {
+                        $event->sender->query->innerJoin('{{%relations}} relations', '[[assets.id]] = [[relations.sourceId]]');
+                        $event->sender->query->andWhere(Db::parseParam('relations.targetId', Craft::$app->user->getId()));
+                    }
                 }
-            });
-        }
-
+            }
+        });
+        
         if( $this->settings->uniqueAssetFilename ) {
             Event::on(AssetElement::class, AssetElement::EVENT_BEFORE_HANDLE_FILE, function($event) {
 
                 $asset = $event->asset;
                 
-                preg_match('/{(.*)}(.*)/', $asset->newLocation, $result, PREG_OFFSET_CAPTURE, 0);
+                if( $asset->tempFilePath ) {
+                    preg_match('/{(.*)}(.*)/', $asset->newLocation, $result, PREG_OFFSET_CAPTURE, 0);
 
-                $folder = $result[1][0];
-                $newFilename = md5(time().'_'.Craft::$app->user->getId()).'_'.$result[2][0];
-                $asset->title =  Assets::filename2Title(pathinfo($result[2][0], PATHINFO_FILENAME));
-            
-                $asset->newLocation = '{'.$folder.'}'.$newFilename;
+                    $folder = $result[1][0];
+                    $newFilename = md5(time().'_'.Craft::$app->user->getId()).'_'.$result[2][0];
+                    $asset->title =  Assets::filename2Title(pathinfo($result[2][0], PATHINFO_FILENAME));
+                
+                    $asset->newLocation = '{'.$folder.'}'.$newFilename;
+                }
 
             });
         }
