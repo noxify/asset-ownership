@@ -2,7 +2,7 @@
     "name": "noxify/asset-ownership",
     "description": "This plugin extends the Asset Query to limit the shown assets.",
     "type": "craft-plugin",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "keywords": [
         "craft",
         "cms",

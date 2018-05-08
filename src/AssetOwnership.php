@@ -30,7 +30,7 @@ use noxify\assetownership\models\Settings as AssetOwnershipSettings;
  *
  * @author    Marcus Reinhardt
  * @package   AssetOwnership
- * @since     1.0.0
+ * @since     1.0.1
  *
  */
 class AssetOwnership extends Plugin
@@ -49,7 +49,7 @@ class AssetOwnership extends Plugin
     /**
      * @var string
      */
-    public $schemaVersion = '1.0.0';
+    public $schemaVersion = '1.0.1';
 
     // Public Methods
     // =========================================================================
@@ -86,11 +86,11 @@ class AssetOwnership extends Plugin
 
                 $asset = $event->asset;
                 
-                preg_match('/{(.*)}(.*)/', $asset->newLocation, $folder, PREG_OFFSET_CAPTURE, 0);
+                preg_match('/{(.*)}(.*)/', $asset->newLocation, $result, PREG_OFFSET_CAPTURE, 0);
 
-                $folder = $folder[1][0];
-                $newFilename = md5(time().'_'.Craft::$app->user->getId()).'_'.$folder[2][0];
-                $asset->title =  Assets::filename2Title(pathinfo($folder[2][0], PATHINFO_FILENAME));
+                $folder = $result[1][0];
+                $newFilename = md5(time().'_'.Craft::$app->user->getId()).'_'.$result[2][0];
+                $asset->title =  Assets::filename2Title(pathinfo($result[2][0], PATHINFO_FILENAME));
             
                 $asset->newLocation = '{'.$folder.'}'.$newFilename;
 
