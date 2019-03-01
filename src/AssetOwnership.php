@@ -74,7 +74,7 @@ class AssetOwnership extends Plugin
         //filter assets if the user is not an admin or has the permission to see assets from other users 
         Event::on('*', AssetQuery::EVENT_AFTER_PREPARE, function($event) {
             if( $event->sender instanceof AssetQuery ) {
-                if( !Craft::$app->user->getIsAdmin() && !Craft::$app->user->checkPermission('viewPeerAssets') ) {
+                if( !Craft::$app->user->getIsAdmin() && !Craft::$app->user->checkPermission('viewPeerAssets') && &&Craft::$app->request->getIsCpRequest() )
                     if( !$event->sender->query->isJoined('{{%relations}}') ) {
                         $event->sender->query->innerJoin('{{%relations}} relations', '[[assets.id]] = [[relations.sourceId]]');
                         $event->sender->query->andWhere(Db::parseParam('relations.targetId', Craft::$app->user->getId()));
